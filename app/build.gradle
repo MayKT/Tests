@@ -1,0 +1,113 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+// Apply the Crashlytics Gradle plugin
+apply plugin: 'com.google.firebase.crashlytics'
+
+apply plugin: 'org.moallemi.advanced-build-version'
+advancedVersioning {
+    nameOptions {
+        versionMajor 1
+        versionMinor 0
+        versionPatch 0
+    }
+    codeOptions {
+        versionCodeType org.moallemi.gradle.internal.VersionCodeType.DATE
+        dependsOnTasks 'release'
+    }
+    outputOptions {
+        renameOutput true
+        nameFormat 'MyApplication-v${versionName}'
+    }
+}
+def appVersionName = advancedVersioning.versionName
+def appVersionCode = advancedVersioning.versionCode
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.mkttestprojects.myapplication"
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode appVersionCode
+        versionName appVersionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // add the Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    // Recommended: Add the Firebase SDK for Google Analytics.
+    implementation 'com.google.firebase:firebase-analytics:17.4.0'
+    // Add the Firebase SDK for Crashlytics.
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+
+
+    // Dagger
+    def dagger_version = "2.22"
+    // def dagger_version = "2.16" // version used by google samples
+
+    // Dagger2 core
+    implementation "com.google.dagger:dagger:$dagger_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+
+    // Dagger Android
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    // Butterknife
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+
+    //Recycler
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    implementation 'jp.wasabeef:glide-transformations:4.1.0'
+
+    // Rx-Retrofit Call Adapter
+    def rxcalladapter_version = '2.5.0'
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rxcalladapter_version"
+    // Retrofit call adapter
+
+    // Retrofit
+    def retrofitVersion = "2.5.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
+    // RxJava
+    def rxjava_version = '2.1.1'
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+
+    // ViewModel and LiveData
+    def lifecycle_version = '2.2.0-alpha03'
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation 'com.android.support:design:28.0.0'
+
+
+}
